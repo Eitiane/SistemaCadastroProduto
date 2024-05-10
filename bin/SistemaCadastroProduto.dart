@@ -2,11 +2,13 @@ import 'dart:io';
 
 void main() {
   var cadastro = CadastroProdutosImpl();
+  //menu de opção
   while (true) {
     print('o que você gostaria de fazer? Escolha uma das opções abaixo');
     print('você gostaria cadastrar? Escolha a opção 1');
     print('você gostaria listar? Escolha a opção 2');
     print('você gostaria buscar? Escolha a opção 3');
+    print('você gostaria remover? Escolha a opção 4');
     String? inputOpcao = stdin.readLineSync();
     var opcao = int.parse(inputOpcao!);
     switch (opcao) {
@@ -25,6 +27,14 @@ void main() {
               'ID: ${produto.id} - Nome: ${produto.nome} - Preço: ${produto.preco} - Quantidade: ${produto.quantidade}');
         } else {
           print('Produto não encontrado.');
+        }
+        break;
+      case 4:
+        print('qual é o produto que gostaria de remover?');
+        var idRemover = int.parse(stdin.readLineSync()!);
+        var produtoRemovido = cadastro.remover(idRemover);
+        if (produtoRemovido != null) {
+          print('Produto removido com sucesso: ${produtoRemovido.nome}');
         }
         break;
       default:
@@ -53,11 +63,13 @@ abstract class CadastroProdutos {
   void listar();
 
   Produto? buscar(int id);
+
+  Produto? remover(int id);
 }
 
 class CadastroProdutosImpl implements CadastroProdutos {
   List<Produto> produtos = [];
-
+// função para receber dados do produto e cadastrar
   @override
   Produto? cadastrar() {
     print("Qual é o id do produto (6 algarismo)?");
@@ -74,7 +86,7 @@ class CadastroProdutosImpl implements CadastroProdutos {
     produtos.add(produto);
     return produto;
   }
-
+// função para buscar produto via id
   @override
   Produto? buscar(int id) {
     for (var produto in produtos) {
@@ -84,7 +96,7 @@ class CadastroProdutosImpl implements CadastroProdutos {
     }
     return null;
   }
-
+// função de listar produtos
   @override
   void listar() {
     if (produtos.isEmpty) {
@@ -96,6 +108,22 @@ class CadastroProdutosImpl implements CadastroProdutos {
             'ID: ${produto.id} - Nome: ${produto.nome} - Preço: ${produto
                 .preco} - Quantidade: ${produto.quantidade}');
       }
+    }
+  }
+// função de remover produtos
+  Produto? remover(int id) {
+    var produtoRemovido;
+    for (var produto in produtos) {
+      if (produto.id == id) {
+        produtoRemovido = produto;
+        break;
+      }
+    }
+    if (produtoRemovido != null) {
+      produtos.remove(produtoRemovido);
+      return produtoRemovido;
+    } else {
+      return null;
     }
   }
 }
