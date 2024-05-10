@@ -62,29 +62,16 @@ class CadastroProdutosImpl implements CadastroProdutos {
   Produto? cadastrar() {
     print("Qual é o id do produto (6 algarismo)?");
     String? inputId = stdin.readLineSync();
-    if (inputId != null) {
-      int id = int.parse(inputId);
-      print('o id do produto é $id');
-    }
+    int id = int.parse(inputId!);
     print("Qual é o nome do produto ?");
-    String? inputNome = stdin.readLineSync();
-    if (inputNome != null) {
-      print('o nome do produto é $inputNome');
-    }
+    String? inputNome = stdin.readLineSync()!;
     print("Qual é o preço do produto?");
-    String? inputPreco = stdin.readLineSync();
-    if (inputPreco != null) {
-      double preco = double.parse(inputPreco);
-      print('o valor do produto é $preco');
-    }
+    double preco = double.parse(stdin.readLineSync()!);
     print("Qual é a quantidade do produto?");
-    String? inputQuant = stdin.readLineSync();
-    if (inputQuant != null) {
-      int Quant = int.parse(inputQuant);
-      print('o id do produto é $Quant');
-    }
-    var produto = Produto(id, inputNome ?? "", preco, Quant);
-    produtos.add(produto); // Adiciona o produto à lista
+    int Quant = int.parse(stdin.readLineSync()!);
+
+    var produto = Produto(id, inputNome  , preco, Quant);
+    produtos.add(produto);
     return produto;
   }
 
@@ -100,9 +87,15 @@ class CadastroProdutosImpl implements CadastroProdutos {
 
   @override
   void listar() {
-    for (var produto in produtos) {
-      print(
-          'ID: ${produto.id} - Nome: ${produto.nome} - Preço: ${produto.preco} - Quantidade: ${produto.quantidade}');
+    if (produtos.isEmpty) {
+      print('Nenhum produto cadastrado.');
+    } else {
+      print('Listando produtos:');
+      for (var produto in produtos) {
+        print(
+            'ID: ${produto.id} - Nome: ${produto.nome} - Preço: ${produto
+                .preco} - Quantidade: ${produto.quantidade}');
+      }
     }
   }
 }
