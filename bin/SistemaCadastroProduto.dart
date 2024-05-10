@@ -21,11 +21,14 @@ void main() {
         var id = int.parse(stdin.readLineSync()!);
         var produto = cadastro.buscar(id);
         if (produto != null) {
-          print('ID: ${produto.id} - Nome: ${produto.nome} - Preço: ${produto.preco} - Quantidade: ${produto.quantidade}');
+          print(
+              'ID: ${produto.id} - Nome: ${produto.nome} - Preço: ${produto.preco} - Quantidade: ${produto.quantidade}');
         } else {
           print('Produto não encontrado.');
         }
         break;
+      default:
+        print('Opção inválida.');
     }
   }
 }
@@ -44,7 +47,7 @@ class Produto {
   }
 }
 
-abstract class CadastroProdutos{
+abstract class CadastroProdutos {
   void cadastrar();
 
   void listar();
@@ -52,7 +55,7 @@ abstract class CadastroProdutos{
   Produto? buscar(int id);
 }
 
-class CadastroProdutosImpl implements CadastroProdutos{
+class CadastroProdutosImpl implements CadastroProdutos {
   List<Produto> produtos = [];
 
   @override
@@ -80,6 +83,9 @@ class CadastroProdutosImpl implements CadastroProdutos{
       int Quant = int.parse(inputQuant);
       print('o id do produto é $Quant');
     }
+    var produto = Produto(id, inputNome ?? "", preco, Quant);
+    produtos.add(produto); // Adiciona o produto à lista
+    return produto;
   }
 
   @override
@@ -93,5 +99,10 @@ class CadastroProdutosImpl implements CadastroProdutos{
   }
 
   @override
-  void listar() {}
+  void listar() {
+    for (var produto in produtos) {
+      print(
+          'ID: ${produto.id} - Nome: ${produto.nome} - Preço: ${produto.preco} - Quantidade: ${produto.quantidade}');
+    }
+  }
 }
